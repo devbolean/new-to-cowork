@@ -1,10 +1,17 @@
 {
-    "name": "new-to-cowork",
-    "description": "BOLEAN onboarding plugins for new Cowork users",
-    "plugins": [
-      {
-        "name": "cowork-setup-wizard",
-        "source": "./cowork-setup-wizard"
-      }
-    ]
-  }
+  "name": "new-to-cowork",
+  "description": "BOLEAN onboarding plugins for new Cowork users",
+  "owner": {
+    "name": "devbolean",
+    "email": "drobitaille@bolean.com",
+    "url": "https://github.com/devbolean"
+  },
+  "plugins": [
+    {
+      "name": "cowork-setup-wizard",
+      "source": "./cowork-setup-wizard",
+      "description": "15-minute guided setup to personalize Cowork for BOLEAN team members",
+      "version": "1.0.0"
+    }
+  ]
+}
