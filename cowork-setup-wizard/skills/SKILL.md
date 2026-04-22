@@ -1,337 +1,139 @@
 ---
 name: cowork-setup-wizard
 description: >
-  A 15-minute guided onboarding that personalizes Cowork for each BOLEAN team
-  member — capturing their role, daily work, tools, and communication style so
-  every result feels tailored instead of generic. Use when a BOLEAN employee is
-  setting up Cowork for the first time, when someone says "set up cowork",
-  "configure cowork", "cowork feels generic", "personalize cowork", "make cowork
-  know me", "why is cowork giving me generic results", "cowork setup", "how do
-  I get better results from cowork", or when a new team member is onboarding.
-  Always run this skill at the start of any BOLEAN employee's first Cowork session.
+  Setup personnel de 2 à 3 minutes pour un·e employé·e BOLEAN qui démarre sur
+  Cowork. Produit un court texte de préférences à coller dans Cowork
+  Settings → Preferences. Aucune écriture sur le Drive partagé, aucun dossier
+  de travail créé, aucun fichier before/after persisté. Utiliser quand un·e
+  employé·e BOLEAN dit « set up cowork », « configure cowork », « personalize
+  cowork », « make cowork know me », « cowork feels generic », ou lors de
+  l'onboarding d'un·e nouvel·le arrivant·e. À lancer une fois au premier
+  démarrage Cowork de chaque membre de l'équipe.
 ---
 
-# BOLEAN Cowork Setup Wizard
+# BOLEAN — Cowork Setup Wizard
 
-**Your Role:** You are a warm, patient onboarding guide for BOLEAN — a marketing,
-web, tech, and AI agency serving clients primarily in the construction industry.
-You help each team member get genuinely personalized results from Cowork in about
-15 minutes. Use plain language, no technical jargon. Ask questions one at a time.
-This should feel like a friendly conversation, not a form.
+**Ton rôle :** tu aides un·e employé·e BOLEAN à produire un texte de préférences personnelles à coller dans Cowork Settings → Preferences. Tu ne crées pas de dossiers, tu n'écris rien sur le Drive partagé, tu ne fabriques pas de fichier before/after. Tu produis **un seul texte**, stocké en scratchpad dans le dossier outputs de la session pour copier-coller.
 
-**Goal:** Run a short interview, then create a personalized preferences file, a
-starter work folder, and a before/after example — turning a blank-slate Cowork
-into an assistant that feels built for that specific person.
+**Durée cible :** 2 à 3 minutes. **Trois questions.**
+
+**Ton de l'interaction :** direct, concis. Les employé·e·s BOLEAN sont occupé·e·s ; ce skill doit livrer vite et sans cérémonie.
 
 ---
 
-## Why This Matters at BOLEAN
+## Architecture — règles non négociables
 
-Cowork starts knowing nothing about the person using it. Without setup, it gives
-the same generic output to a UX designer and an SEO specialist. The difference
-between generic and personalized is a one-time, 15-minute setup in
-Settings → Preferences.
-
-This skill runs that setup.
-
----
-
-## Instructions
-
-### Step 1: Set Expectations
-
-Say:
-
-> "Let's get Cowork set up for you — this takes about 15 minutes and the
-> difference in quality is significant. I'll ask you a few questions about your
-> role and how you work at BOLEAN, then create your personal preferences and set
-> up your work folder.
->
-> Ready? Let's start."
+- **Contexte agence** (périmètre autorisé, conventions, architecture des dossiers clients) : dans `AI/00_AGENCE/`, maintenu par l'équipe. **Déjà en place pour toute l'équipe.** Ne pas le recréer, ne pas le dupliquer, ne pas y écrire depuis ce skill.
+- **Préférences personnelles** : à coller dans **Cowork Settings → Preferences**. **Jamais** sur le Drive partagé. Les stocker en scratchpad dans `outputs/` pour copier-coller.
+- **Hors-périmètre (« off-limits »)** : règle agence définie dans `AI/00_AGENCE/00_CONTEXTE.md` (seul `AI` est autorisé). Ne **pas** reposer la question à chaque employé·e. C'est une règle d'équipe, pas une préférence individuelle.
+- **Dossier de travail personnel** : NE PAS en créer. Chaque employé·e organise son travail comme iel le veut.
+- **Exemple before/after** : si l'employé·e le demande, le montrer en chat. Ne pas le sauvegarder.
 
 ---
 
-### Step 2: Run the Interview
+## Déroulé
 
-Ask these questions **one at a time**, waiting for each answer before moving on.
+### Étape 1 — Présenter
 
-**Question 1 — Role:**
-> "What's your role at BOLEAN? For example: designer, developer, SEO specialist,
-> marketing strategist, AI consultant, tech support, project manager..."
+Dire :
 
-Note their role — you'll use it to suggest tools in Question 4 and optionally
-tailor the folder structure in Step 4.
+> « On met en place Cowork pour toi en 3 questions. À la fin, je te donne un court texte à coller dans Cowork Settings → Preferences. Rien n'est écrit sur le Drive partagé — c'est personnel. Environ 3 minutes. »
 
-**Question 2 — Daily work:**
-> "Walk me through a typical week. What are the 3 to 5 things you spend the most
-> time on?"
+### Étape 2 — Vérifier que le socle agence existe
 
-**Question 3 — Communication style:**
-> "How do you like to receive information — brief and to the point, or detailed
-> with full context? And when you write to clients or colleagues, what's your
-> usual tone: formal, casual, or somewhere in between?"
+Vérifier la présence de `AI/00_AGENCE/00_CONTEXTE.md`.
 
-**Question 4 — Tools:**
+- **Si présent** : continuer. C'est ce fichier que les préférences personnelles pointeront.
+- **Si absent** : **ne pas le créer depuis ce skill.** Dire à l'employé·e : « Le socle agence `AI/00_AGENCE/00_CONTEXTE.md` n'est pas en place. C'est un travail d'équipe, pas un setup individuel. Signale-le à l'équipe qui maintient le socle. On peut continuer ton setup personnel, mais tes préférences pointeront vers un fichier qui n'existe pas encore. »
 
-First, confirm the shared BOLEAN tools:
-> "At BOLEAN, everyone uses Gmail, Google Chat, Google Calendar, Google Drive
-> (including a shared client folder with all client assets and strategy docs),
-> Asana, and Freshbooks. Do those all apply to you, or are any not part of your
-> day-to-day?"
+### Étape 3 — Trois questions (une à la fois, attendre chaque réponse)
 
-Then suggest role-specific tools based on their answer to Question 1 — offer
-as a list to confirm rather than asking them to start from scratch:
+**Q1 — Rôle et activités :**
+> « Ton rôle chez BOLEAN, et les 3 activités sur lesquelles tu passes le plus de temps ? »
 
-| Role | Suggested tools to confirm |
-|---|---|
-| Marketing / Account | Google Analytics, Meta Ads Manager, HubSpot, Notion |
-| Designer | Figma, Adobe Creative Suite, Canva |
-| Developer | GitHub/GitLab, VS Code, Vercel/Netlify |
-| SEO | Ahrefs, SEMrush, Google Search Console, Screaming Frog |
-| Tech Support | Remote desktop tools, ticketing system, internal wikis |
-| AI Consultant | Make, Zapier, n8n, Notion, Claude API |
-| Project Manager | Asana (advanced), Google Sheets, Notion |
+**Q2 — Style de communication + exemples concrets :**
+> « Comment tu aimes recevoir l'info — concis / détaillé, formel / décontracté ? Donne-moi un exemple d'une phrase que tu trouverais bien tournée, et un exemple d'une phrase que tu trouverais lourde ou agaçante. »
 
-Say something like:
-> "For a [their role], people often use [suggested tools]. Does that match you,
-> or are there others you'd add?"
+Insister pour obtenir les deux exemples concrets. Sans eux, le style reste vague et les préférences n'ont pas d'effet opérationnel. Si l'employé·e sèche, proposer un exemple et demander à le valider ou le modifier.
 
-**Question 5 — Off-limits:**
-> "Are there any folders, files, or types of work that are strictly off-limits —
-> things you'd never want Cowork touching? For example: confidential client
-> folders, financial records, or anything on a specific Drive?"
+**Q3 — Outils métier :**
+> « Tes outils quotidiens en plus des outils partagés BOLEAN (Gmail, Google Chat, Calendar, Drive, Asana, Freshbooks) ? »
 
-**Question 6 — What success looks like:**
-> "What's the one task you'd most love to delegate to Cowork in the next two
-> weeks? What would make this setup feel worth the 15 minutes?"
+### Étape 4 — Produire le texte
 
----
-
-### Step 3: Create the Preferences Document
-
-Create `bolean-preferences.md` in their work folder (see Step 4).
-Write it in first person, using their actual words. No placeholders.
+Écrire dans `outputs/<prenom>-preferences-a-coller.md` un texte en première personne, structuré ainsi :
 
 ```markdown
-# My Cowork Preferences — BOLEAN
+# À coller dans Cowork Settings → Preferences (tout ce qui est sous la ligne).
+# Ne pas sauvegarder ce fichier sur le Drive partagé — il est personnel à <prenom>.
 
-## Who I Am
-[2–3 sentences: their role at BOLEAN, their specialization, and what they
-focus on day-to-day. Written in first person. Example: "I'm a designer at
-BOLEAN, a marketing and tech agency serving clients in the construction
-industry. I focus on visual deliverables — brand identity, web design, and
-client-facing assets."]
+---
 
-## How I Work
-[Bullet list of their 3–5 main weekly tasks, in their own words.]
+Je suis [rôle] chez BOLEAN. Mon travail :
+- [activité 1, dans leurs mots]
+- [activité 2, dans leurs mots]
+- [activité 3, dans leurs mots]
 
-## My Communication Style
-[How they like output delivered — length, tone, format. Be specific.
-Example: "I prefer concise answers and bullet points over long paragraphs.
-When writing to clients, my tone is professional but warm, never stiff."]
+Style de communication attendu : [longueur + ton, dans leurs mots].
+Exemple de bonne phrase : « [exemple fourni Q2] »
+Exemple à éviter : « [contre-exemple fourni Q2] »
 
-## Tools I Use
-**BOLEAN shared tools:**
-- Gmail
-- Google Chat
-- Google Calendar
-- Google Drive (including the shared BOLEAN client folder)
-- Asana
-- Freshbooks
+Outils spécifiques à mon rôle : [liste Q3].
 
-**My role-specific tools:**
-[List confirmed in Question 4]
-
-## Off-Limits Areas
-[Explicit list from Question 5. If none stated: "None specified — proceed
-with care on anything irreversible."]
-
-## What I'm Trying to Do with Cowork
-[1–2 sentences on the task they named in Question 6.]
+Contexte agence : lire `AI/00_AGENCE/00_CONTEXTE.md` au démarrage de toute tâche cliente. Ce fichier contient le périmètre autorisé, l'architecture des dossiers clients, et les conventions BOLEAN. Ne pas dupliquer son contenu ici.
 ```
 
-Tell them:
-> "I've created your preferences file. I'll show you where to paste it in
-> Cowork Settings in a moment — that's what makes every future response
-> automatically reflect your context."
+Contraintes sur ce texte :
+- **Écrit en français.** Le Drive et les clients sont en français.
+- **Moins de 250 mots.** Au-delà, Cowork Settings devient illisible et l'effet se dilue.
+- **Rien de transitoire.** Pas d'objectifs « les 2 prochaines semaines », pas de projet en cours — ça périme, ça pollue.
+- **Pas de duplication avec `00_AGENCE/`.** Outils partagés, périmètre, conventions → pointés, pas copiés.
+- **Les mots de l'employé·e.** Pas de reformulation marketing, pas de broderie.
 
----
+### Étape 5 — Livrer
 
-### Step 4: Set Up the Work Folder
+Dire :
 
-Create a folder structure named after their role.
-
-**Base structure (everyone):**
-```
-bolean-[role]/
-├── references/
-│   ├── bolean-preferences.md     ← paste into Cowork Settings
-│   ├── bolean-context.md         ← BOLEAN agency context (see below)
-│   └── off-limits.md             ← their off-limits list
-├── active-work/                  ← tasks currently in progress
-├── drafts/                       ← work in progress, not final
-├── final/                        ← approved, complete deliverables
-└── archive/                      ← finished work, no longer active
-```
-
-**Create `references/bolean-context.md` with this content:**
-
-```markdown
-# BOLEAN — Agency Context
-
-BOLEAN is a marketing, web, tech, and AI agency.
-Primary client sector: construction industry.
-Team size: 15–20 people.
-Specializations: marketing, design, development, SEO, tech support, AI solutions.
-
-## Shared Tools
-- Communication: Gmail, Google Chat
-- Scheduling: Google Calendar
-- Files: Google Drive — shared client folder contains strategy docs, brand
-  guides, target audience profiles, photos, videos, fonts, and more per client
-- Project management: Asana
-- Billing: Freshbooks
-
-## Tone at BOLEAN
-We work with construction-sector clients who value clarity, reliability, and
-practical results. Communication is professional but direct — no unnecessary
-jargon, no filler. When in doubt, simpler is better.
-```
-
-**Optional role-specific subfolders** — add only if clearly useful for their role:
-
-| Role | Additional subfolders |
-|---|---|
-| Marketing / Account | `campaigns/`, `briefs/` |
-| Designer | `assets/`, `brand/` |
-| Developer | `specs/`, `environments/` |
-| SEO | `keywords/`, `audits/` |
-| Tech Support | `tickets/`, `docs/` |
-| AI Consultant | `automations/`, `training/` |
-| Project Manager | `timelines/`, `invoices/` |
-
----
-
-### Step 5: Walk Them Through Applying the Preferences
-
-Say:
-> "Here's how to activate your preferences — it takes 2 minutes:
+> « C'est prêt : `outputs/<prenom>-preferences-a-coller.md`.
 >
-> 1. Open Cowork **Settings** (gear icon, top-right or bottom-left)
-> 2. Find the **Preferences** section — a text field where you describe yourself
->    and how you work
-> 3. Open your `references/bolean-preferences.md` file and paste the full
->    contents into that field
-> 4. Save
+> Marche à suivre (environ 30 secondes) :
+> 1. Ouvrir Cowork Settings → Preferences.
+> 2. Copier tout ce qui est sous la ligne de séparation dans le fichier.
+> 3. Coller, enregistrer.
 >
-> From now on, Cowork reads that context automatically at the start of every
-> session. You won't need to re-introduce yourself. It will already know your
-> role, your tools, and how you like to receive information."
-
-Ask:
-> "Do you want to do that now while I wait, or should I keep going and show
-> you the before/after example first?"
+> À partir de la prochaine session, Cowork aura ce contexte en tête sans que tu aies à le rappeler. Si tu veux voir la différence avant/après, dis-le-moi et je te montre la même demande traitée avec et sans — en chat, pas en fichier. »
 
 ---
 
-### Step 6: Show the Before and After
+## Checks avant de conclure
 
-Create `references/before-and-after-example.md` using the task from Question 6
-(or a typical task for their role if they didn't specify one).
-
-```markdown
-# Before/After Example — What Your Setup Unlocks
-
-## The Request
-"[Task from Question 6, or a representative task for their role]"
-
----
-
-## Without Preferences (generic Cowork)
-
-[Generate a response as if Cowork knows nothing — generic, could apply to
-anyone, no industry or role context.]
+- [ ] 3 questions posées. Pas de 4ème. Pas de sous-question parasite.
+- [ ] Q2 a bien collecté **un exemple positif ET un exemple négatif concrets**.
+- [ ] Texte rédigé en français, en première personne, avec les mots de l'employé·e.
+- [ ] Texte sous 250 mots.
+- [ ] Aucun fichier créé sur le Drive partagé `AI/`.
+- [ ] Aucun dossier de travail personnel créé.
+- [ ] Aucune règle hors-périmètre répétée dans le texte (elle est dans `00_AGENCE/`).
+- [ ] Aucun objectif transitoire (« ce mois-ci », « ce trimestre ») dans le texte.
 
 ---
 
-## With BOLEAN Preferences (personalized)
+## Dépannage
 
-[Generate the same response using everything you now know — their role,
-their specialization, their communication style, their tools, and the
-BOLEAN construction-sector context. This should feel written for them.]
-```
+**Cowork reste générique après avoir collé ?**
+Vérifier que tout le texte sous la ligne a bien été collé (pas seulement le premier paragraphe), et que l'enregistrement a eu lieu. Redémarrer la session Cowork.
 
-Say:
-> "Open `references/before-and-after-example.md` to see the same request
-> answered two ways. That quality difference applies to every task from here on."
+**Pas d'accès à Cowork Settings → Preferences ?**
+Chercher « Personalization », « User Context », ou « À propos de toi ». Si vraiment absent, coller le texte en début de chaque nouvelle session comme palliatif.
 
----
+**L'employé·e demande un dossier de travail personnel créé par le skill ?**
+Décliner. Lui expliquer que le skill ne crée pas de dossier — iel organise son travail comme iel veut, et pas sur le Drive partagé `AI/` (qui est réservé au contenu agence et clients).
 
-### Step 7: Deliver the Summary
-
-Say:
-> "Your BOLEAN Cowork setup is complete. Here's what we set up:
->
-> **Preferences file** — `references/bolean-preferences.md`
-> Paste this into Cowork Settings once. Every future response will reflect
-> your role, your tools, and your style automatically.
->
-> **Agency context file** — `references/bolean-context.md`
-> Gives Cowork background on BOLEAN and the construction-sector context.
-> Reference it at the start of any client-related task.
->
-> **Work folder** — `bolean-[role]/`
-> Organized with a references section and a clear drafts → final → archive
-> flow so nothing gets lost or overwritten.
->
-> **Before/after example** — `references/before-and-after-example.md`
-> Open it anytime to remind yourself what personalized output looks like.
->
-> **Your next step:** Try asking me to help with that task you mentioned —
-> the one you'd love to delegate. With your preferences in place, the result
-> will feel noticeably different."
+**`AI/00_AGENCE/00_CONTEXTE.md` absent ?**
+Ne pas le créer depuis ce skill. C'est une tâche d'équipe. Avertir l'employé·e et continuer son setup personnel en pointant vers ce chemin futur.
 
 ---
 
-## Quality Checks
+## Skills liés (si présents)
 
-Before finishing, confirm:
-- [ ] All 6 questions asked and answered — none skipped
-- [ ] Preferences file written in first person using the employee's actual words
-- [ ] `bolean-context.md` created with BOLEAN agency context included
-- [ ] Folder named with their actual role, not a generic placeholder
-- [ ] Off-limits areas explicitly recorded (or "none specified" noted)
-- [ ] Role-specific subfolders added only where clearly relevant
-- [ ] Before/after example uses a task relevant to their actual role
-- [ ] Employee walked through how to apply preferences in Settings
-- [ ] No technical jargon used at any point
-- [ ] Total interaction under 20 minutes
-
----
-
-## Troubleshooting
-
-**Skill didn't activate automatically?**
-Invoke directly with `/cowork-setup-wizard`.
-
-**Cowork still feels generic after applying preferences?**
-Confirm the full contents of `bolean-preferences.md` were pasted into
-Settings — not just part of it. Preferences must be saved before starting
-a new session.
-
-**Can't find Preferences in Settings?**
-Look for "Personalization", "User Context", or "About you". If unavailable,
-paste the preferences content at the start of each new session as a
-temporary workaround.
-
-**Employee works across multiple specializations?**
-Combine the two closest role profiles for tool suggestions and folder
-additions. Note the hybrid in their preferences file.
-
----
-
-## Related Skills
-
-- `/teach-your-voice` — Build a writing voice profile once preferences are set
-- `/safe-first-task` — Run a low-risk first session to build confidence with Cowork
-- `/what-can-cowork-do` — Discover the best Cowork use cases for their specific role
+- `/kickoff-client` — crée un nouveau dossier client depuis `_TEMPLATE/`.
