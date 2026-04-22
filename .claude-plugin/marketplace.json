@@ -1,0 +1,10 @@
+{
+    "name": "new-to-cowork",
+    "description": "BOLEAN onboarding plugins for new Cowork users",
+    "plugins": [
+      {
+        "name": "cowork-setup-wizard",
+        "source": "./cowork-setup-wizard"
+      }
+    ]
+  }
